@@ -14,6 +14,7 @@ namespace Yous_API.Controllers
 {
     public class APIController : ApiController
     {
+
         [Route("api/GetServiceApiResult")]
         [HttpPost]
         public IHttpActionResult GetServiceApiResult(RequestJson obj)
@@ -49,6 +50,7 @@ namespace Yous_API.Controllers
                 reader.Dispose();
             }
             #endregion
+
             return new TextResult(ret, Request);
         }
 
@@ -56,11 +58,8 @@ namespace Yous_API.Controllers
         [HttpPost]
         public ResponseJson GetUser(dynamic obj)
         {
-            ResponseJson result = new ResponseJson();
-            result.success = true;
-            result.message = "ok";
             MySqlDbHelperDB dbhelper = new MySqlDbHelperDB();
-            result.data = dbhelper.Fetch<base_area>("select * from base_area");
+            ResponseJson result = new ResponseJson { success=true, data=dbhelper.Fetch<base_area>("select * from base_area"), message=""};
             return result;
         }
 
