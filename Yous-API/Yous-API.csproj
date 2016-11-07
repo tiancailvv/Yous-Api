@@ -130,6 +130,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\TextResult.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\HelpPage\ApiDescriptionExtensions.cs" />
     <Compile Include="Areas\HelpPage\App_Start\HelpPageConfig.cs" />
@@ -156,7 +157,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Database.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\ObjResult.cs" />
+    <Compile Include="Models\ResponseJson.cs" />
     <Compile Include="Models\PetaPoco.cs" />
     <Compile Include="Models\RequestJson.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
