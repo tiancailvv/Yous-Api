@@ -9,10 +9,15 @@ namespace Yous_Api.Models
     public class RequestJson
     {
         [DataMember(Order = 1)]
-        public Newtonsoft.Json.Linq.JObject Parameters { get; set; }
+        public String Parameters { get; set; }
+
+        [DataMember(Order = 2)]
+        public String Method { get; set; }
+
         [DataMember(Order = 3)]
-        public string ForeEndType { get; set; }
+        public int ForeEndType { get; set; }
+
         [DataMember(Order = 4)]
-        public string Code { get; set; }
+        public String Code { get; set; }
     }
 }

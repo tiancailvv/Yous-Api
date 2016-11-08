@@ -21,7 +21,7 @@ namespace Yous_API.Controllers
         public IHttpActionResult GetServiceApiResult(dynamic inputParame)
         {
             string ret = String.Empty;
-            InParameters parame = GetInParametersCondition(inputParame);
+            RequestJson parame = GetInParametersCondition(inputParame);
 
             #region 发送Request请求
             DateTime reqeustdt = DateTime.Now;
@@ -58,7 +58,7 @@ namespace Yous_API.Controllers
 
         [Route("api/10000001")]
         [HttpPost]
-        public ResponseJson GetUser(InParameters parameters)
+        public ResponseJson GetUser(RequestJson parameters)
         {
             JObject o = JObject.Parse(parameters.Parameters);
             //step1 check param参数，参数不对，直接抛出业务异常
@@ -78,7 +78,7 @@ namespace Yous_API.Controllers
         /// </summary>
         /// <param name="InputParameters"></param>
         /// <returns></returns>
-        private InParameters GetInParametersCondition(dynamic InputParameters)
+        private RequestJson GetInParametersCondition(dynamic InputParameters)
         {
             if (InputParameters.Parameters == null)
                 InputParameters.Parameters = InputParameters.parameters;
@@ -86,7 +86,7 @@ namespace Yous_API.Controllers
                 InputParameters.ForeEndType = InputParameters.foreEndType;
             if (InputParameters.Code == null)
                 InputParameters.Code = InputParameters.code;
-            return new InParameters
+            return new RequestJson
             {
                 Parameters = InputParameters.Parameters == null ? string.Empty : InputParameters.Parameters.ToString(), //Action对应的传入参数
                 ForeEndType = (int)InputParameters.ForeEndType,     //前端类型 1：IOS、2：Android、3：H5
