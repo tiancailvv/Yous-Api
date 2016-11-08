@@ -62,8 +62,13 @@ namespace Yous_API.Controllers
         {
             string para = parameters.Parameters;
             JObject o = JObject.Parse(para);
+            //step1 check param参数，参数不对，直接抛出业务异常
             var groupId = o["groupId"];
+
+            //step2 sql语句
             MySqlDbHelperDB dbhelper = new MySqlDbHelperDB();
+
+            //ste3 返回结果
             ResponseJson result = new ResponseJson { success=true, data=dbhelper.Fetch<base_area>("select * from base_area"), message=""};
             return result;
         }
