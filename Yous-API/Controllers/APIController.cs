@@ -23,7 +23,6 @@ namespace Yous_API.Controllers
 
             #region 发送Request请求
             DateTime reqeustdt = DateTime.Now;
-            //Logs.kufaLog("前端调用类型：" + foreendtype + "\r\n前端请求地址：" + target + "\r\n开始发送请求：" + param, WebConfigurationManager.AppSettings["LogUrl"], logfoldername);
             HttpWebRequest proxyRequest = HttpWebRequest.Create("http://"+Url.Request.Headers.Host+"/api/" + obj.code) as HttpWebRequest;
             proxyRequest.Method = "POST";
             proxyRequest.KeepAlive = false;
