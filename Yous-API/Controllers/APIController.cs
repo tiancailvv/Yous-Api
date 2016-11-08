@@ -61,15 +61,16 @@ namespace Yous_API.Controllers
         public ResponseJson GetUser(RequestJson parameters)
         {
             JObject o = JObject.Parse(parameters.Parameters);
-            //step1 check param参数，参数不对，直接抛出业务异常
+            //step1 TODO-check param参数，参数不对，直接抛出业务异常
             var groupId = o["groupId"];
 
-            //step2 业务组装-sql语句
+            //step2 TODO-业务组装sql语句
             MySqlDbHelperDB dbhelper = new MySqlDbHelperDB();
+            var result = dbhelper.Fetch<base_area>("select * from base_area");
 
             //step3 返回结果
-            ResponseJson result = new ResponseJson { success=true, data=dbhelper.Fetch<base_area>("select * from base_area"), message=""};
-            return result;
+            ResponseJson responseJson = new ResponseJson { success=true, data=result, message=""};
+            return responseJson;
         }
 
         #region 入参对象
