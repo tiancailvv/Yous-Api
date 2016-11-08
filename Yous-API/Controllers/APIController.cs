@@ -58,17 +58,16 @@ namespace Yous_API.Controllers
 
         [Route("api/10000001")]
         [HttpPost]
-        public ResponseJson GetUser(dynamic parameters)
+        public ResponseJson GetUser(InParameters parameters)
         {
-            string para = parameters.Parameters;
-            JObject o = JObject.Parse(para);
+            JObject o = JObject.Parse(parameters.Parameters);
             //step1 check param参数，参数不对，直接抛出业务异常
             var groupId = o["groupId"];
 
-            //step2 sql语句
+            //step2 业务组装-sql语句
             MySqlDbHelperDB dbhelper = new MySqlDbHelperDB();
 
-            //ste3 返回结果
+            //step3 返回结果
             ResponseJson result = new ResponseJson { success=true, data=dbhelper.Fetch<base_area>("select * from base_area"), message=""};
             return result;
         }
