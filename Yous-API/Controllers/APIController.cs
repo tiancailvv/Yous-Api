@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -17,19 +18,21 @@ namespace Yous_API.Controllers
 
         [Route("api/GetServiceApiResult")]
         [HttpPost]
-        public IHttpActionResult GetServiceApiResult(RequestJson obj)
+        public IHttpActionResult GetServiceApiResult(dynamic inputParame)
         {
             string ret = String.Empty;
+            InParameters parame = GetInParametersCondition(inputParame);
 
             #region 发送Request请求
             DateTime reqeustdt = DateTime.Now;
-            HttpWebRequest proxyRequest = HttpWebRequest.Create("http://"+Url.Request.Headers.Host+"/api/" + obj.code) as HttpWebRequest;
+            HttpWebRequest proxyRequest = HttpWebRequest.Create("http://" + Url.Request.Headers.Host + "/api/" + parame.Code) as HttpWebRequest;
             proxyRequest.Method = "POST";
             proxyRequest.KeepAlive = false;
             proxyRequest.ContentType = "application/json";
             proxyRequest.Timeout = 200000;
 
-            byte[] aryBuf = Encoding.GetEncoding("utf-8").GetBytes(obj.ToString());
+            var parameters = Newtonsoft.Json.JsonConvert.SerializeObject(parame);
+            byte[] aryBuf = Encoding.GetEncoding("utf-8").GetBytes(parameters);
             proxyRequest.ContentLength = aryBuf.Length;
             using (Stream writer = proxyRequest.GetRequestStream())
             {
@@ -55,12 +58,39 @@ namespace Yous_API.Controllers
 
         [Route("api/10000001")]
         [HttpPost]
-        public ResponseJson GetUser(dynamic obj)
+        public ResponseJson GetUser(dynamic parameters)
         {
+            string para = parameters.Parameters;
+            JObject o = JObject.Parse(para);
+            var groupId = o["groupId"];
             MySqlDbHelperDB dbhelper = new MySqlDbHelperDB();
             ResponseJson result = new ResponseJson { success=true, data=dbhelper.Fetch<base_area>("select * from base_area"), message=""};
             return result;
         }
+
+        #region 入参对象
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="InputParameters"></param>
+        /// <returns></returns>
+        private InParameters GetInParametersCondition(dynamic InputParameters)
+        {
+            if (InputParameters.Parameters == null)
+                InputParameters.Parameters = InputParameters.parameters;
+            if (InputParameters.ForeEndType == null)
+                InputParameters.ForeEndType = InputParameters.foreEndType;
+            if (InputParameters.Code == null)
+                InputParameters.Code = InputParameters.code;
+            return new InParameters
+            {
+                Parameters = InputParameters.Parameters == null ? string.Empty : InputParameters.Parameters.ToString(), //Action对应的传入参数
+                ForeEndType = (int)InputParameters.ForeEndType,     //前端类型 1：IOS、2：Android、3：H5
+                Method = "POST",                                    //默认只支持POST提交
+                Code = InputParameters.Code                         //前台传的编码
+            };
+        }
+        #endregion
 
     }
 }
